@@ -7,6 +7,7 @@ CONFIG += c++11
 CONFIG += qtquickcompiler # for better performances -- but it's only with the commercial Qt version (no op in the free version)
 
 SOURCES += main.cpp \
+    interfacemanager.cpp \
     oscsender.cpp \
     osc/OscOutboundPacketStream.cpp \
     osc/OscPrintReceivedElements.cpp \
@@ -24,6 +25,7 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 HEADERS += \
+    interfacemanager.h \
     oscsender.h \
     osc/MessageMappingOscPacketListener.h \
     osc/OscException.h \

@@ -1,6 +1,7 @@
 #include <QDebug>
 #include "controller.h"
 #include <string>
+#include <iostream>
 
 using namespace std;
 

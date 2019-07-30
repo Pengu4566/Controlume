@@ -108,12 +108,15 @@ Window {
             id: comp_dial_rotation
             x: 2328
             y: 1292
+            from: 0.5
+            to: 1
             width: 400
             height: 400
             inputMode: Dial.Circular
-            value: valueFromPoint(mouseX, mouseY);
+            value: 0.5
             onAngleChanged:  {
                 controller.sendSomething("/composition/video/effects/transform/rotationz", [value]);
+                board
             }
         }
 
@@ -121,10 +124,12 @@ Window {
             id: comp_dial_scale
             x: 1922
             y: 1292
+            from: 0.1
+            to: 0.5
             width: 400
             height: 400
             inputMode: Dial.Circular
-            value: valueFromPoint(mouseX, mouseY);
+            value: 0.1
             onAngleChanged:  {
                 controller.sendSomething("/composition/video/effects/transform/scale", [value]);
             }
@@ -134,12 +139,18 @@ Window {
             id: comp_dial_speed
             x: 414
             y: 1284
+            from: 0.01
+            to: 0.2
             width: 400
             height: 400
             inputMode: Dial.Circular
-            value: valueFromPoint(mouseX, mouseY);
+            value: 0.05
             onAngleChanged:  {
+
+                //var transformed_value = board.speed_transform(value)
+
                 controller.sendSomething("/composition/speed", [value]);
+
             }
         }
 
@@ -152,7 +163,7 @@ Window {
             spacing: 0
             wheelEnabled: false
             inputMode: Dial.Circular
-            value: valueFromPoint(mouseX, mouseY);
+            value: 1.0
             onAngleChanged:  {
                 controller.sendSomething("/composition/video/opacity", [value]);
             }
@@ -164,7 +175,7 @@ Window {
             x: 1197
             y: 1297
             text: qsTr("RESYNC")
-            font.pointSize: 50
+            font.pointSize: 20
             onClicked: {
                 controller.sendSomething("/composition/tempocontroller/resync", [0]);
             }
@@ -196,15 +207,6 @@ Window {
             font.pixelSize: 50
         }
 
-        Rectangle {
-            id: rectangle1
-            x: 856
-            y: 1117
-            width: 1013
-            height: 406
-            color: "#000000"
-        }
-
 
         Dial {
             id: layer1_dial_opacity
@@ -212,10 +214,11 @@ Window {
             y: 362
             width: 375
             height: 375
-            value: valueFromPoint(mouseX, mouseY)
             inputMode: Dial.Circular
+            value: 1.0
             onAngleChanged:  {
-                controller.sendSomething("/composition/layers/1/video/opacity", [value]);
+                //var transformed_value = board.opacity_transform(value)
+                controller.sendSomething("/composition/layers/1/video/opacity", [value])
             }
         }
 
@@ -332,7 +335,7 @@ Window {
             y: 362
             width: 375
             height: 375
-            value: valueFromPoint(mouseX, mouseY)
+            value: 1.0
             inputMode: Dial.Circular
             onAngleChanged:  {
                 controller.sendSomething("/composition/layers/2/video/opacity", [value]);
@@ -388,6 +391,8 @@ Window {
             id: layer3_dial_rotation
             x: 2297
             y: 362
+            from: 0.5
+            to: 1
             width: 375
             height: 375
             value: valueFromPoint(mouseX, mouseY)
@@ -444,6 +449,8 @@ Window {
             id: layer1_dial_rotation
             x: 469
             y: 362
+            from: 0.5
+            to: 1
             width: 375
             height: 375
             value: valueFromPoint(mouseX, mouseY)
@@ -457,6 +464,8 @@ Window {
             id: layer2_dial_rotation
             x: 1381
             y: 362
+            from: 0.5
+            to: 1
             width: 375
             height: 375
             value: valueFromPoint(mouseX, mouseY)
@@ -472,7 +481,7 @@ Window {
             y: 362
             width: 375
             height: 375
-            value: valueFromPoint(mouseX, mouseY)
+            value: 1.0
             inputMode: Dial.Circular
             onAngleChanged:  {
                 controller.sendSomething("/composition/layers/3/video/opacity", [value]);
@@ -600,17 +609,195 @@ Window {
             font.pixelSize: 50
         }
 
+        Button {
+            id: button_reset
+            x: 1476
+            y: 1297
+            text: qsTr("RESET ALL")
+            font.pointSize: 20
+
+            NumberAnimation {
+                    id: animateScale
+                    target: comp_dial_scale
+                    properties: "scale"
+                    to: 0
+                    loops: Animation.Infinite
+                    easing {type: Easing.OutBack; overshoot: 500}
+               }
+
+            onClicked: {
+
+                //reset scale
+                controller.sendSomething("/composition/video/effects/transform/scale", [0.1]);
+
+                //comp_dial_scale.value = 0.1
+
+                //while(comp_dial_scale.value != 0.1)
+                //{
+                //    comp_dial_scale.value = comp_dial_scale.value - 0.0001
+                //    //console.log(comp_dial_scale.value)
+                //}
+
+                //reset speed
+                controller.sendSomething("/composition/speed", [0.1]);
+
+                comp_dial_speed.value = 0.05
+
+                //reset rotation
+                controller.sendSomething("/composition/video/effects/transform/rotationz", [0.5]);
+                controller.sendSomething("/composition/layers/1/video/effects/transform/rotationz", [0.5]);
+                controller.sendSomething("/composition/layers/2/video/effects/transform/rotationz", [0.5]);
+                controller.sendSomething("/composition/layers/3/video/effects/transform/rotationz", [0.5]);
+
+
+
+                comp_dial_rotation.value = 0.5
+                layer1_dial_rotation.value = 0.5
+                layer2_dial_rotation.value = 0.5
+                layer3_dial_rotation.value = 0.5
+
+
+                //reset opacity
+                controller.sendSomething("/composition/video/opacity", [0.99]);
+                controller.sendSomething("/composition/layers/1/video/opacity", [0.99]);
+                controller.sendSomething("/composition/layers/2/video/opacity", [0.99]);
+                controller.sendSomething("/composition/layers/3/video/opacity", [0.99]);
+
+                comp_dial_opacity.value = 1
+                layer1_dial_opacity.value = 1
+                layer2_dial_opacity.value = 1
+                layer3_dial_opacity.value = 1
+            }
+        }
+
         Text {
-            id: infomrative_text5
-            x: 1279
-            y: 1284
-            width: 168
+            id: layer1_text_rotation_value
+            x: 564
+            y: 464
+            width: 185
+            height: 51
+            color: "#ffffff"
+            text: (layer1_dial_rotation.value * 100).toFixed(2) + "%"
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 50
+            textFormat: Text.AutoText
+        }
+
+        Text {
+            id: layer1_text_opacity_value
+            x: 158
+            y: 459
+            width: 175
             height: 56
             color: "#ffffff"
-            text: qsTr("secrets!")
-            rotation: -30
-            textFormat: Text.AutoText
+            text: (layer1_dial_opacity.value * 100).toFixed(2) + "%"
+            horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 50
+            textFormat: Text.AutoText
+        }
+
+        Text {
+            id: layer2_text_opacity_value
+            x: 1080
+            y: 459
+            width: 175
+            height: 56
+            color: "#ffffff"
+            text: (layer2_dial_opacity.value * 100).toFixed(2) + "%"
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 50
+            textFormat: Text.AutoText
+        }
+
+        Text {
+            id: layer2_text_rotation_value
+            x: 1476
+            y: 464
+            width: 185
+            height: 51
+            color: "#ffffff"
+            text: (layer2_dial_rotation.value * 100).toFixed(2) + "%"
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 50
+            textFormat: Text.AutoText
+        }
+
+        Text {
+            id: layer3_text_opacity_value
+            x: 2005
+            y: 459
+            width: 175
+            height: 56
+            color: "#ffffff"
+            text: (layer3_dial_opacity.value * 100).toFixed(2) + "%"
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 50
+            textFormat: Text.AutoText
+        }
+
+        Text {
+            id: layer3_text_rotation_value
+            x: 2392
+            y: 464
+            width: 185
+            height: 51
+            color: "#ffffff"
+            text: (layer3_dial_rotation.value * 100).toFixed(2) + "%"
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 50
+            textFormat: Text.AutoText
+        }
+
+        Text {
+            id: comp_text_rotation_value
+            x: 2444
+            y: 1410
+            width: 185
+            height: 51
+            color: "#ffffff"
+            text: (comp_dial_rotation.value * 100).toFixed(2) + "%"
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 50
+            textFormat: Text.AutoText
+        }
+
+        Text {
+            id: comp_text_scale_value
+            x: 2076
+            y: 1410
+            width: 115
+            height: 51
+            color: "#ffffff"
+            text: (comp_dial_scale.value * 100).toFixed(2) + "%"
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 50
+            textFormat: Text.AutoText
+        }
+
+        Text {
+            id: comp_text_speed_value
+            x: 543
+            y: 1394
+            width: 142
+            height: 56
+            color: "#ffffff"
+            text: (comp_dial_speed.value * 100).toFixed(2) + "%"
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 50
+            textFormat: Text.AutoText
+        }
+
+        Text {
+            id: comp_text_opacity_value
+            x: 121
+            y: 1394
+            width: 175
+            height: 56
+            color: "#ffffff"
+            text: (comp_dial_opacity.value * 100).toFixed(2) + "%"
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 50
+            textFormat: Text.AutoText
         }
 
 

@@ -5,9 +5,11 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQmlEngine>
 #include <QTimer>
 #include <QObject>
 #include "controller.h"
+#include "interfacemanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -48,6 +50,8 @@ int main(int argc, char *argv[])
     // Pass a C++ object to QML.
     // Note: It's considered bad practice to do the opposite. Always access C++ methods, signals and properties from QML,
     // and not the other way around.
+    QScopedPointer<InterfaceManager> board(new InterfaceManager);
+    engine.rootContext()->setContextProperty("board", board.data());
     engine.rootContext()->setContextProperty("controller", &controller);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
