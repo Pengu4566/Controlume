@@ -3,6 +3,7 @@
 This is a Windows app for remote controlling the Resolume Arena software suite through Open Sound Control (OSC) over a WiFi connection. It is based on proto-oscpack by Alexandre Quessy (https://github.com/mapmapteam/proto-qtoscpack). 
 
 ***Insert some screenshots here***
+
 This project aims to bring a fully custom interface for my dj and play style while retaining the openness and versatility of the transmission medium (allowing me to choose from any of the software that supports it). Currently I have built the program in qt5 and am using a Microsoft Surface Pro 4 as the main testing device. the touch functionality offers some useful benefits over controlling with just a mouse such as multiple input simultaneously and intuitive touch controls.
 
 Features:
