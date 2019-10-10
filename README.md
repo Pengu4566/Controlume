@@ -13,7 +13,7 @@ Features:
 - ***get more info from controlume plans to put here***
 
 
-![alt text](https://imgur.com/a/D9qdnQ0)
+![alt text](/1.png)
 
 
 ## Introduction to OSC
