@@ -13,7 +13,7 @@ Features:
 - ***get more info from controlume plans to put here***
 
 
-![controlume main screen](1.png)
+![controlume main screen](/1.PNG)
 
 
 ## Introduction to OSC
