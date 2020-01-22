@@ -10,7 +10,6 @@ Features:
 - speed controls for master channel
 - (coming soon) master volume control
 - (coming soon) beat syncing and BPM controls
-- ***get more info from controlume plans to put here***
 
 
 ![controlume main screen](/1.PNG)
