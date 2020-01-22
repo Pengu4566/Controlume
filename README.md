@@ -14,6 +14,8 @@ Features:
 
 ![controlume main screen](/1.PNG)
 
+[![Alt text](https://img.youtube.com/vi/hk-JKrs0rrc/0.jpg)](https://www.youtube.com/watch?v=hk-JKrs0rrc)
+
 
 ## Introduction to OSC
 
